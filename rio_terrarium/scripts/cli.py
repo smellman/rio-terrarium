@@ -13,9 +13,7 @@ from rio_terrarium.mbtiler import RGBTiler
 
 
 def _rgb_worker(data, window, ij, g_args):
-    return data_to_rgb(
-        data[0][g_args["bidx"] - 1], g_args["base_val"], g_args["interval"], g_args["round_digits"]
-    )
+    return data_to_rgb(data[0][g_args["bidx"] - 1])
 
 
 @click.command("terrarium")

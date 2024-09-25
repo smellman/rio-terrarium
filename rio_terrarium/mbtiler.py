@@ -142,7 +142,7 @@ def _tile_worker(tile):
         resampling=Resampling.bilinear,
     )
 
-    out = data_to_rgb(out, global_args["base_val"], global_args["interval"], global_args["round_digits"])
+    out = data_to_rgb(out)
 
     return tile, global_args["writer_func"](out, global_args["kwargs"].copy(), toaffine)
 
