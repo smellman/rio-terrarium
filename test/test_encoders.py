@@ -1,5 +1,5 @@
 from __future__ import division
-from rio_rgbify.encoders import data_to_rgb, _decode, _range_check
+from rio_terrarium.encoders import data_to_rgb, _decode, _range_check
 import numpy as np
 import pytest
 
@@ -13,11 +13,7 @@ def test_encode_data_roundtrip():
                 dtype=np.float64)),
         axis=2) / (511. + 511.)) * maxrand, 2) + minrand
 
-    baseval = -1000
-    interval = 0.1
-    round_digits = 0
-
-    rtripped = _decode(data_to_rgb(testdata.copy(), baseval, interval, round_digits=round_digits), baseval, interval)
+    rtripped = _decode(data_to_rgb(testdata.copy()))
 
     assert testdata.min() == rtripped.min()
     assert testdata.max() == rtripped.max()

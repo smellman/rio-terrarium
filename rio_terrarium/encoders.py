@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 
 
-def data_to_rgb(data, baseval, interval, round_digits=0):
+def data_to_rgb(data):
     """
     Given an arbitrary (rows x cols) ndarray,
     encode the data into uint8 RGB from an arbitrary
@@ -12,13 +12,6 @@ def data_to_rgb(data, baseval, interval, round_digits=0):
     -----------
     data: ndarray
         (rows x cols) ndarray of data to encode
-    baseval: float
-        the base value of the RGB numbering system.
-        will be treated as zero for this encoding
-    interval: float
-        the interval at which to encode
-    round_digits: int
-        erased less significant digits
 
     Returns
     --------
@@ -27,10 +20,6 @@ def data_to_rgb(data, baseval, interval, round_digits=0):
         data encoded
     """
     data = data.astype(np.float64)
-    data -= baseval
-    data /= interval
-
-    data = np.around(data / 2**round_digits) * 2**round_digits
 
     rows, cols = data.shape
 
@@ -41,20 +30,39 @@ def data_to_rgb(data, baseval, interval, round_digits=0):
 
     rgb = np.zeros((3, rows, cols), dtype=np.uint8)
 
-    rgb[2] = ((data / 256) - (data // 256)) * 256
-    rgb[1] = (((data // 256) / 256) - ((data // 256) // 256)) * 256
-    rgb[0] = ((((data // 256) // 256) / 256) - (((data // 256) // 256) // 256)) * 256
+    data += 32768
+    rgb[0] = np.floor(data /256)
+    rgb[1] = np.floor(data % 256)
+    rgb[2] = np.floor((data - np.floor(data)) * 256)
 
     return rgb
 
-
-def _decode(data, base, interval):
+def _decode(rgb):
     """
-    Utility to decode RGB encoded data
-    """
-    data = data.astype(np.float64)
-    return base + (((data[0] * 256 * 256) + (data[1] * 256) + data[2]) * interval)
+    Given a uint8 (3 x rows x cols) ndarray,
+    decode the data into an arbitrary base and interval
 
+    Parameters
+    -----------
+    rgb: ndarray
+        uint8 (3 x rows x cols) ndarray of data to decode
+
+    Returns
+    --------
+    ndarray: data
+        a (rows x cols) ndarray with the data decoded
+    """
+    rows, cols = rgb.shape[1:]
+
+    data = np.zeros((rows, cols), dtype=np.float64)
+
+    data += rgb[0] * 256
+    data += rgb[1]
+    data += rgb[2] / 256
+
+    data -= 32768
+
+    return data
 
 def _range_check(datarange):
     """

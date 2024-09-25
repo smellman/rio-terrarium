@@ -6,7 +6,7 @@ from click.testing import CliRunner
 import numpy as np
 
 import rasterio as rio
-from rio_rgbify.scripts.cli import rgbify
+from rio_terrarium.scripts.cli import terrarium
 
 from raster_tester.compare import affaux, upsample_array
 
@@ -38,8 +38,8 @@ def test_cli_good_elev():
     runner = CliRunner()
     with runner.isolated_filesystem():
         result = runner.invoke(
-            rgbify,
-            [in_elev_src, "rgb.tif", "--interval", 0.001, "--base-val", -100, "-j", 1],
+            terrarium,
+            [in_elev_src, "rgb.tif", "-j", 1],
         )
 
         assert result.exit_code == 0
@@ -56,14 +56,10 @@ def test_cli_fail_elev():
     runner = CliRunner()
     with runner.isolated_filesystem():
         result = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 "rgb.tif",
-                "--interval",
-                0.00000001,
-                "--base-val",
-                -100,
                 "-j",
                 1,
             ],
@@ -77,12 +73,10 @@ def test_mbtiler_webp():
     with runner.isolated_filesystem():
         out_mbtiles_finer = "output-0-dot-1.mbtiles"
         result_finer = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles_finer,
-                "--interval",
-                0.1,
                 "--min-z",
                 10,
                 "--max-z",
@@ -97,7 +91,7 @@ def test_mbtiler_webp():
 
         out_mbtiles_coarser = "output-1.mbtiles"
         result_coarser = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles_coarser,
@@ -121,12 +115,10 @@ def test_mbtiler_png():
     with runner.isolated_filesystem():
         out_mbtiles_finer = "output-0-dot-1.mbtiles"
         result_finer = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles_finer,
-                "--interval",
-                0.1,
                 "--min-z",
                 10,
                 "--max-z",
@@ -139,7 +131,7 @@ def test_mbtiler_png():
 
         out_mbtiles_coarser = "output-1.mbtiles"
         result_coarser = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles_coarser,
@@ -163,7 +155,7 @@ def test_mbtiler_png_bounding_tile():
     with runner.isolated_filesystem():
         out_mbtiles_not_limited = "output-not-limited.mbtiles"
         result_not_limited = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles_not_limited,
@@ -179,7 +171,7 @@ def test_mbtiler_png_bounding_tile():
 
         out_mbtiles_limited = "output-limited.mbtiles"
         result_limited = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles_limited,
@@ -200,7 +192,7 @@ def test_mbtiler_png_bounding_tile():
         )
 
         result_badtile = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles_limited,
@@ -223,7 +215,7 @@ def test_mbtiler_webp_badzoom():
     with runner.isolated_filesystem():
         out_mbtiles = "output.mbtiles"
         result = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles,
@@ -246,7 +238,7 @@ def test_mbtiler_webp_badboundingtile():
     with runner.isolated_filesystem():
         out_mbtiles = "output.mbtiles"
         result = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles,
@@ -269,7 +261,7 @@ def test_mbtiler_webp_badboundingtile_values():
     with runner.isolated_filesystem():
         out_mbtiles = "output.mbtiles"
         result = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles,
@@ -292,7 +284,7 @@ def test_bad_input_format():
     with runner.isolated_filesystem():
         out_mbtiles = "output.lol"
         result = runner.invoke(
-            rgbify,
+            terrarium,
             [
                 in_elev_src,
                 out_mbtiles,

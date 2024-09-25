@@ -1,4 +1,4 @@
-"""rio_rgbify CLI."""
+"""rio_terrarium CLI."""
 
 import click
 
@@ -8,8 +8,8 @@ from riomucho import RioMucho
 import json
 from rasterio.rio.options import creation_options
 
-from rio_rgbify.encoders import data_to_rgb
-from rio_rgbify.mbtiler import RGBTiler
+from rio_terrarium.encoders import data_to_rgb
+from rio_terrarium.mbtiler import RGBTiler
 
 
 def _rgb_worker(data, window, ij, g_args):
@@ -18,30 +18,9 @@ def _rgb_worker(data, window, ij, g_args):
     )
 
 
-@click.command("rgbify")
+@click.command("terrarium")
 @click.argument("src_path", type=click.Path(exists=True))
 @click.argument("dst_path", type=click.Path(exists=False))
-@click.option(
-    "--base-val",
-    "-b",
-    type=float,
-    default=0,
-    help="The base value of which to base the output encoding on [DEFAULT=0]",
-)
-@click.option(
-    "--interval",
-    "-i",
-    type=float,
-    default=1,
-    help="Describes the precision of the output, by incrementing interval [DEFAULT=1]",
-)
-@click.option(
-    "--round-digits",
-    "-r",
-    type=int,
-    default=0,
-    help="Less significants encoded bits to be set to 0. Round the values, but have better images compression [DEFAULT=0]",
-)
 @click.option("--bidx", type=int, default=1, help="Band to encode [DEFAULT=1]")
 @click.option(
     "--max-z",
@@ -71,13 +50,10 @@ def _rgb_worker(data, window, ij, g_args):
 @click.option("--verbose", "-v", is_flag=True, default=False)
 @click.pass_context
 @creation_options
-def rgbify(
+def terrarium(
     ctx,
     src_path,
     dst_path,
-    base_val,
-    interval,
-    round_digits,
     bidx,
     max_z,
     min_z,
@@ -87,7 +63,7 @@ def rgbify(
     verbose,
     creation_options,
 ):
-    """rio-rgbify cli."""
+    """rio-terrarium cli."""
     if dst_path.split(".")[-1].lower() == "tif":
         with rio.open(src_path) as src:
             meta = src.profile.copy()
@@ -97,7 +73,7 @@ def rgbify(
         for c in creation_options:
             meta[c] = creation_options[c]
 
-        gargs = {"interval": interval, "base_val": base_val, "round_digits": round_digits, "bidx": bidx}
+        gargs = {"bidx": bidx}
 
         with RioMucho(
             [src_path], dst_path, _rgb_worker, options=meta, global_args=gargs
@@ -125,9 +101,6 @@ def rgbify(
         with RGBTiler(
             src_path,
             dst_path,
-            interval=interval,
-            base_val=base_val,
-            round_digits=round_digits,
             format=format,
             bounding_tile=bounding_tile,
             max_z=max_z,

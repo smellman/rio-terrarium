@@ -1,19 +1,17 @@
-# rio-rgbify
-Encode arbitrary bit depth rasters in pseudo base-256 as RGB
+# rio-terrarium
+Encode arbitrary bit depth rasters in pseudo base-256 as Terrarium RGB
 
-[![Build Status](https://travis-ci.org/mapbox/rio-rgbify.svg)](https://travis-ci.org/mapbox/rio-rgbify)[![Coverage Status](https://coveralls.io/repos/github/mapbox/rio-rgbify/badge.svg?branch=its-a-setup)](https://coveralls.io/github/mapbox/rio-rgbify)
+## Original code
+
+This code is based on the original code from [rio-rgbify](https://github.com/mapbox/rio-rgbify).
 
 ## Installation
 
-### From PyPi
-```
-pip install rio-rgbify
-```
 ### Development
 ```
-git clone git@github.com:mapbox/rio-rgbify.git
+git clone git@github.com:smellman/rio-terrarium.git
 
-cd rio-rgbify
+cd rio-terrarium
 
 pip install -e '.[test]'
 
@@ -26,16 +24,9 @@ pip install -e '.[test]'
 - To create tiles _directly_ from data (recommended), output to an `.mbtiles`
 
 ```
-Usage: rio rgbify [OPTIONS] SRC_PATH DST_PATH
+Usage: rio terrarium [OPTIONS] SRC_PATH DST_PATH
 
 Options:
-  -b, --base-val FLOAT   The base value of which to base the output encoding
-                         on [DEFAULT=0]
-  -i, --interval FLOAT   Describes the precision of the output, by
-                         incrementing interval [DEFAULT=1]
-  -r, --round-digits     Less significants encoded bits to be set
-                         to 0. Round the values, but have better
-                         images compression [DEFAULT=0]
   --bidx INTEGER         Band to encode [DEFAULT=1]
   --max-z INTEGER        Maximum zoom to tile (.mbtiles output only)
   --bounding-tile TEXT   Bounding tile '[{x}, {y}, {z}]' to limit output tiles

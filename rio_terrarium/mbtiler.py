@@ -23,7 +23,7 @@ from rasterio.warp import reproject, transform_bounds
 
 from rasterio.enums import Resampling
 
-from rio_rgbify.encoders import data_to_rgb
+from rio_terrarium.encoders import data_to_rgb
 
 buffer = bytes if sys.version_info > (3,) else buffer
 
@@ -228,16 +228,6 @@ class RGBTiler:
 
     Keyword Arguments
     ------------------
-    baseval: float
-        the base value of the RGB numbering system.
-        (will be treated as zero for this encoding)
-        Default=0
-    interval: float
-        the interval at which to encode
-        Default=1
-    round_digits: int
-        Erased less significant digits
-        Default=0
     format: str
         output tile image format (png or webp)
         Default=png
@@ -256,9 +246,6 @@ class RGBTiler:
         outpath,
         min_z,
         max_z,
-        interval=1,
-        base_val=0,
-        round_digits=0,
         bounding_tile=None,
         **kwargs
     ):
@@ -293,9 +280,6 @@ class RGBTiler:
                 "count": 3,
                 "crs": "EPSG:3857",
             },
-            "base_val": base_val,
-            "interval": interval,
-            "round_digits": round_digits,
             "writer_func": writer_func,
         }
 

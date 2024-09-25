@@ -1,9 +1,9 @@
-"""rio-rgbify: setup."""
+"""rio-terrarium: setup."""
 
 from setuptools import setup, find_packages
 
 # Parse the version from the fiona module.
-with open("rio_rgbify/__init__.py") as f:
+with open("rio_terrarium/__init__.py") as f:
     for line in f:
         if line.find("__version__") >= 0:
             version = line.split("=")[1].strip()
@@ -23,15 +23,15 @@ extra_reqs = {
     ],
 }
 
-setup(name="rio-rgbify",
+setup(name="rio-terrarium",
       version=version,
       description=u"Encode arbitrary bit depth rasters in pseudo base-256 as RGB",
       long_description=long_description,
       classifiers=[],
       keywords="",
-      author=u"Damon Burgett",
-      author_email="damon@mapbox.com",
-      url="https://github.com/mapbox/rio-rgbify",
+      author=u"Taro Matsuzawa",
+      author_email="btm@tech.email.ne.jp",
+      url="https://github.com/smellman/rio-terrarium",
       license="BSD",
       packages=find_packages(exclude=["ez_setup", "examples", "tests"]),
       include_package_data=True,
@@ -40,5 +40,5 @@ setup(name="rio-rgbify",
       extras_require=extra_reqs,
       entry_points="""
       [rasterio.rio_plugins]
-      rgbify=rio_rgbify.scripts.cli:rgbify
+      terrarium=rio_terrarium.scripts.cli:terrarium
       """)

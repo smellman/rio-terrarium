@@ -1,1 +1,0 @@
-"""rio-rgbify cli."""
