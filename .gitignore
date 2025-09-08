@@ -67,3 +67,4 @@ docs/notebooks/.ipynb_checkpoints/*
 .pytest_cache
 .hypothesis
 .coverage*
+.venv/

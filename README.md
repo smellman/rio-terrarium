@@ -8,13 +8,11 @@ This code is based on the original code from [rio-rgbify](https://github.com/map
 ## Installation
 
 ### Development
+
 ```
 git clone git@github.com:smellman/rio-terrarium.git
-
 cd rio-terrarium
-
-pip install -e '.[test]'
-
+uv sync
 ```
 
 ## CLI usage

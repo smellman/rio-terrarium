@@ -1,0 +1,20 @@
+[project]
+name = "rio-terrarium"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.2.1",
+    "mercantile>=1.2.1",
+    "pillow>=11.3.0",
+    "rasterio>=1.4.3",
+    "rio-mucho>=1.0.0",
+]
+
+[project.entry-points."rasterio.rio_plugins"]
+terrarium = "rio_terrarium.scripts.cli:terrarium"
+
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
